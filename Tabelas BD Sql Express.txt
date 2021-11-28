@@ -1,0 +1,41 @@
+CREATE TABLE [dbo].[endereco] (
+    [Id]         INT            IDENTITY (1, 1) NOT NULL,
+    [logradouro] NVARCHAR (MAX) NULL,
+    [numero]     INT            NULL,
+    [cep]        INT            NULL,
+    [bairro]     NVARCHAR (MAX) NULL,
+    [cidade]     NVARCHAR (MAX) NULL,
+    [estado]     NVARCHAR (MAX) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[pessoa] (
+    [Id]       INT           IDENTITY (1, 1) NOT NULL,
+    [Nome]     NVARCHAR (50) NULL,
+    [Endereco] INT           NULL,
+    [Cpf]      VARCHAR (50)  NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Endereco] FOREIGN KEY ([Endereco]) REFERENCES [dbo].[endereco] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE [dbo].[pessoa_telefone] (
+    [Id_pessoa]   INT NOT NULL,
+    [Id_telefone] INT NOT NULL,
+    CONSTRAINT [FK_Id_telefone] FOREIGN KEY ([Id_telefone]) REFERENCES [dbo].[telefone] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT [FK_Id_pessoa] FOREIGN KEY ([Id_pessoa]) REFERENCES [dbo].[pessoa] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE [dbo].[telefone] (
+    [Id]     INT IDENTITY (1, 1) NOT NULL,
+    [numero] INT NOT NULL,
+    [ddd]    INT NOT NULL,
+    [tipo]   INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_tipo] FOREIGN KEY ([tipo]) REFERENCES [dbo].[telefone_tipo] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE [dbo].[telefone_tipo] (
+    [Id]   INT          IDENTITY (1, 1) NOT NULL,
+    [tipo] VARCHAR (50) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
